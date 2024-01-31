@@ -22,7 +22,6 @@ class GiftCardSubmitRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'code'   => 'required|exists:gift_cards,code',
             'mobile' => 'required|string',
         ];
     }

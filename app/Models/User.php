@@ -46,4 +46,19 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(GiftCard::class);
     }
+
+    public function wallet(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Wallet::class);
+    }
+
+    public function useGiftCard(GiftCard $giftCard)
+    {
+        $this->giftCards()->attach($giftCard->id, ['quantity' => $giftCard->quantity]);
+    }
+
+    public function defaultWallet()
+    {
+        return $this->wallet()->firstOrCreate();
+    }
 }

@@ -24,6 +24,13 @@ class GiftCard extends Model
         return $query->whereCode($code);
     }
 
+    public function decrease()
+    {
+        return $this->update([
+            'remaining_balance' => $this->remaining_balance - $this->quantity,
+        ]);
+    }
+
     public function isFull(): bool
     {
         return $this->users_used >= $this->max_users;

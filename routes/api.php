@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\GiftCard\GiftCardController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +14,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::post('gifts/{gift_card}/submit', [GiftCardController::class, 'submit'])->name('gifts.submit');
