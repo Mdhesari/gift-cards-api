@@ -17,6 +17,8 @@ return new class extends Migration {
             $table->integer('max_users');
             $table->integer('users_used')->default(0);
             $table->decimal('quantity');
+
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -10,12 +10,11 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('mobile')->unique();
-            $table->string('password');
-            $table->rememberToken();
+        Schema::create('gift_card_user', function (Blueprint $table) {
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('gift_card_id')->constrained();
+            $table->decimal('quantity');
+            $table->primary(['user_id', 'gift_card_id']);
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('gift_card_user');
     }
 };
