@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\GiftCard\GiftCardController;
+use App\Http\Controllers\Wallet\WalletDetailController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,4 +15,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('gifts/{gift_card}/submit', [GiftCardController::class, 'submit'])->name('gifts.submit');
+Route::post('gifts/{gift_card:key}/submit', [GiftCardController::class, 'submit'])->name('gifts.submit');
+
+Route::get('wallets/{user:mobile}/details', WalletDetailController::class)->name('wallets.details');

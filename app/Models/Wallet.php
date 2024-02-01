@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Wallet extends Model
 {
@@ -18,6 +19,11 @@ class Wallet extends Model
     protected $casts = [
         'balance' => 'decimal:0',
     ];
+
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class);
+    }
 
     public function increaseBalance(float $qua): bool|int
     {
