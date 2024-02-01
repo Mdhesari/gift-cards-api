@@ -48,10 +48,12 @@ it('user cannot submit an invalid or already-used gift card', function () {
 it('user cannot submit a gift card twice', function () {
     $gf = GiftCard::factory()->create();
 
-    app(GiftCardService::class)->submit(new GiftCardParam(
-        $gf->code,
-        $m = '9128177871',
-    ));
+    app(GiftCardService::class)->submit(
+        new GiftCardParam(
+            $gf->code,
+            $m = '9128177871',
+        )
+    );
 
     $response = $this->post(route('gifts.submit', $gf->code), [
         'mobile' => $m,
