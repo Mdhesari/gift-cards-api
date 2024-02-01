@@ -3,6 +3,7 @@
 use App\Exceptions\GiftCardAlreadyUsedException;
 use App\Exceptions\GiftCardFullyUtilizedException;
 use App\Models\GiftCard;
+use App\Models\Transaction;
 use App\Models\User;
 use App\Params\GiftCardParam;
 use App\Services\GiftCardService;
@@ -23,6 +24,9 @@ it('can user use a gift card', function () {
     // Gift card is updated
     $this->assertEquals($gf->remaining_balance - $gf->quantity, $gff->remaining_balance);
     $this->assertEquals($gf->used_count + 1, $gff->used_count);
+
+    // user transaction is created
+    $this->assertTrue(Transaction::whereQuantity($gf->quantity)->whereUserId($user->id)->exists());
 
     // user wallet is updated
     $this->assertEquals($user->defaultWallet()->balance, $gf->quantity);

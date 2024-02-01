@@ -2,22 +2,33 @@
 
 namespace App\Services;
 
+use App\Enums\TransactionStatus;
 use App\Exceptions\GiftCardAlreadyUsedException;
 use App\Exceptions\GiftCardDecreaseException;
 use App\Exceptions\GiftCardFullyUtilizedException;
-use App\Exceptions\WalletIncreaseException;
 use App\Http\Resources\GiftCardResponse;
 use App\Models\GiftCard;
 use App\Models\User;
+use App\Params\DepositParam;
 use App\Params\GiftCardParam;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
 class GiftCardService
 {
+    public function __construct(
+        private TransactionService $transactionSrv
+    )
+    {
+        //
+    }
+
     public function submit(GiftCardParam $param)
     {
-        return DB::transaction(function () use ($param) {
+        $transactionSrv = $this->transactionSrv;
+
+        // Race condition management and do it sequentially to avoid incorrectness of the system.
+        return DB::transaction(function () use ($param, $transactionSrv) {
             // TODO: mobile could be stored in a more structured way like if we want to only store iranian numbers substr(-10) will work. in order to have numbers start with 9
             $user = User::firstOrCreate([
                 'mobile' => $param->mobile,
@@ -53,10 +64,12 @@ class GiftCardService
                 throw new GiftCardDecreaseException;
             }
 
-            if (! $user->defaultWallet()->increaseBalance($giftCard->quantity)) {
-
-                throw new WalletIncreaseException;
-            }
+            $transactionSrv->deposit(new DepositParam(
+                $user->id,
+                $user->defaultWallet()->id,
+                $giftCard->quantity,
+                TransactionStatus::Success, // Todo: may admin verify the transaction first in future but for not it's ok
+            ));
 
             return new GiftCardResponse([]);
         });
