@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-use App\Exceptions\GiftCardAlreadyUsed;
+use App\Exceptions\GiftCardAlreadyUsedException;
 use App\Exceptions\GiftCardDecreaseException;
-use App\Exceptions\GiftCardIsFull;
+use App\Exceptions\GiftCardFullyUtilizedException;
 use App\Exceptions\WalletIncreaseException;
 use App\Http\Resources\GiftCardResponse;
 use App\Models\GiftCard;
@@ -32,13 +32,13 @@ class GiftCardService
 
             if ($giftCard->isFull()) {
 
-                throw new GiftCardIsFull;
+                throw new GiftCardFullyUtilizedException();
             }
 
             $userAlreadyUsed = $user->giftCards()->where('gift_card_id', $giftCard->id)->exists();
             if ($userAlreadyUsed) {
 
-                throw new GiftCardAlreadyUsed;
+                throw new GiftCardAlreadyUsedException();
             }
 
             $user->useGiftCard($giftCard);
