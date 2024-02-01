@@ -28,7 +28,7 @@ class GiftCardService
         $transactionSrv = $this->transactionSrv;
 
         // Race condition management and do it sequentially to avoid incorrectness of the system.
-        return DB::transaction(function () use ($param, $transactionSrv) {
+        DB::transaction(function () use ($param, $transactionSrv) {
             // TODO: mobile could be stored in a more structured way like if we want to only store iranian numbers substr(-10) will work. in order to have numbers start with 9
             $user = User::firstOrCreate([
                 'mobile' => $param->mobile,
@@ -70,8 +70,8 @@ class GiftCardService
                 $giftCard->quantity,
                 TransactionStatus::Success, // Todo: may admin verify the transaction first in future but for now it's ok
             ));
-
-            return new GiftCardResponse([]);
         });
+
+        return new GiftCardResponse([]);
     }
 }
