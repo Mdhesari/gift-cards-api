@@ -19,6 +19,13 @@ class GiftCard extends Model
         'quantity',
     ];
 
+    protected $casts = [
+        'remaining_balance' => 'decimal:0',
+        'max_users'         => 'decimal:0',
+        'used_count'        => 'decimal:0',
+        'quantity'          => 'decimal:0',
+    ];
+
     public static function scopeCode($query, $code)
     {
         return $query->whereCode($code);

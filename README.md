@@ -25,5 +25,5 @@ composer install
 php artisan test
 
 # Migrations
-php artisan migrate
+php artisan migrate --seed
 ```

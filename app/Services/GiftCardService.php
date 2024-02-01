@@ -72,7 +72,9 @@ class GiftCardService
             ));
         });
 
-        return new GiftCardResponse([]);
+        return new GiftCardResponse([
+            'data' => [],
+        ]);
     }
 
     public function getStatistics(string $id)
@@ -82,8 +84,8 @@ class GiftCardService
         return new GiftCardResponse([
             'data' => [
                 'remaining_balance' => $giftCard->remaining_balance,
+                'remaining_users'   => strval($giftCard->max_users - $giftCard->used_count),
                 'max_users'         => $giftCard->max_users,
-                'used_count'        => $giftCard->used_count,
                 'users'             => $giftCard->users()->pluck('mobile'), // Todo: We may use pagination
             ],
         ]);

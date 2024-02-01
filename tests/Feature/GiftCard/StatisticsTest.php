@@ -21,8 +21,8 @@ it('can get gift card statistics', function () {
     $response->assertSuccessful()->assertJson([
         'data' => [
             'remaining_balance' => $gf->remaining_balance,
+            'remaining_users'   => $gf->max_users - $gf->used_count,
             'max_users'         => $gf->max_users,
-            'used_count'        => $gf->used_count,
         ]
     ])->assertJsonStructure([
         'data' => [
