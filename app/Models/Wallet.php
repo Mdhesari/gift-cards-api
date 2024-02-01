@@ -18,10 +18,8 @@ class Wallet extends Model
         'balance' => 'decimal:0',
     ];
 
-    public function increase(float $qua)
+    public function increaseBalance(float $qua): bool|int
     {
-        return $this->update([
-            'balance' => intval($this->balance) + $qua,
-        ]);
+        return $this->increment('balance', $qua);
     }
 }

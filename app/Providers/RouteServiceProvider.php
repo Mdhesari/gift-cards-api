@@ -30,7 +30,7 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         Route::bind('gift_card', function ($param) {
-            return GiftCard::whereId($param)->orWhereCode($param)->findOrFail();
+            return GiftCard::whereId($param)->orWhere('code', $param)->firstOrFail();
         });
 
         $this->routes(function () {

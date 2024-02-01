@@ -15,7 +15,7 @@ class GiftCard extends Model
         'code',
         'remaining_balance',
         'max_users',
-        'users_used',
+        'used_count',
         'quantity',
     ];
 
@@ -24,15 +24,18 @@ class GiftCard extends Model
         return $query->whereCode($code);
     }
 
-    public function decrease()
+    public function decreaseBalance(float|int $qua): bool|int
     {
-        return $this->update([
-            'remaining_balance' => $this->remaining_balance - $this->quantity,
-        ]);
+        return $this->decrement('remaining_balance', $qua);
+    }
+
+    public function increaseUsed(int $count = 1): bool|int
+    {
+        return $this->increment('used_count', $count);
     }
 
     public function isFull(): bool
     {
-        return $this->users_used >= $this->max_users;
+        return $this->used_count >= $this->max_users;
     }
 }

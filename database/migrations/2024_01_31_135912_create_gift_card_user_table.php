@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('gift_card_user', function (Blueprint $table) {
             $table->foreignId('user_id')->constrained();
-            $table->foreignId('gift_card_id')->constrained();
+            $table->foreignUuid('gift_card_id')->constrained();
             $table->decimal('quantity');
             $table->primary(['user_id', 'gift_card_id']);
             $table->timestamps();

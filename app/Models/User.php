@@ -57,7 +57,7 @@ class User extends Authenticatable
         $this->giftCards()->attach($giftCard->id, ['quantity' => $giftCard->quantity]);
     }
 
-    public function defaultWallet()
+    public function defaultWallet(): \Illuminate\Database\Eloquent\Model
     {
         return $this->wallet()->firstOrCreate();
     }

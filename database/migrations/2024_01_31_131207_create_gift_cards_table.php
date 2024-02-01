@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->string('code')->unique();
             $table->decimal('remaining_balance', 10);
             $table->integer('max_users');
-            $table->integer('users_used')->default(0);
+            $table->integer('used_count')->default(0);
             $table->decimal('quantity');
 
             $table->softDeletes();
