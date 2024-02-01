@@ -38,4 +38,9 @@ class GiftCard extends Model
     {
         return $this->used_count >= $this->max_users;
     }
+
+    public function users(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(User::class);
+    }
 }

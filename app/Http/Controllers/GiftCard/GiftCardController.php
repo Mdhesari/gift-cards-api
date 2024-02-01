@@ -6,10 +6,10 @@ use App\Exceptions\GiftCardAlreadyUsedException;
 use App\Exceptions\GiftCardFullyUtilizedException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GiftCardSubmitRequest;
-use App\Models\GiftCard;
 use App\Params\GiftCardParam;
 use App\Services\GiftCardService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
@@ -24,15 +24,15 @@ class GiftCardController extends Controller
 
     /**
      * @param GiftCardSubmitRequest $req
-     * @param GiftCard $giftCard
+     * @param $giftCardCode
      * @return JsonResponse
      */
-    public function submit(GiftCardSubmitRequest $req, GiftCard $giftCard): JsonResponse
+    public function submit(GiftCardSubmitRequest $req, $giftCardCode): JsonResponse
     {
         try {
 
             $res = $this->giftCardSrv->submit(
-                new GiftCardParam($giftCard->code, $req->mobile)
+                new GiftCardParam($giftCardCode, $req->mobile)
             );
 
             return response()->json($res, Response::HTTP_OK);
@@ -40,5 +40,12 @@ class GiftCardController extends Controller
 
             throw new BadRequestHttpException($e->getMessage());
         }
+    }
+
+    public function statistics(Request $req, $giftCardId)
+    {
+        $res = $this->giftCardSrv->getStatistics($giftCardId);
+
+        return response()->json($res, Response::HTTP_OK);
     }
 }

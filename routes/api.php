@@ -15,6 +15,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+/**
+ * Gifts
+ */
 Route::post('gifts/{gift_card:key}/submit', [GiftCardController::class, 'submit'])->name('gifts.submit');
+
+Route::get('gifts/{gift_card}/statistics', [GiftCardController::class, 'statistics'])->name('gifts.statistics');
+
+/**
+ * Wallets
+ */
 
 Route::get('wallets/{user:mobile}/details', WalletDetailController::class)->name('wallets.details');

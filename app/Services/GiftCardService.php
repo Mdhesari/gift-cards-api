@@ -74,4 +74,18 @@ class GiftCardService
 
         return new GiftCardResponse([]);
     }
+
+    public function getStatistics(string $id)
+    {
+        $giftCard = GiftCard::findOrFail($id);
+
+        return new GiftCardResponse([
+            'data' => [
+                'remaining_balance' => $giftCard->remaining_balance,
+                'max_users'         => $giftCard->max_users,
+                'used_count'        => $giftCard->used_count,
+                'users'             => $giftCard->users()->pluck('mobile'), // Todo: We may use pagination
+            ],
+        ]);
+    }
 }

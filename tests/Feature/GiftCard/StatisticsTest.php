@@ -1,33 +1,32 @@
 <?php
 
 use App\Models\GiftCard;
-use App\Models\User;
 use App\Params\GiftCardParam;
 use App\Services\GiftCardService;
 
-it('can user get wallet details', function () {
-    $user = User::factory()->create([
-        'mobile' => $m = '9128177871',
-    ]);
-
+it('can get gift card statistics', function () {
     $gf = GiftCard::factory()->create();
 
     app(GiftCardService::class)->submit(
         new GiftCardParam(
             $gf->code,
-            $m,
+            '9128177871',
         )
     );
 
-    $response = $this->get(route('wallets.details', $m));
+    $response = $this->get(route('gifts.statistics', $gf->id));
+
+    $gf->refresh();
 
     $response->assertSuccessful()->assertJson([
         'data' => [
-            'balance' => $user->defaultWallet()->balance,
+            'remaining_balance' => $gf->remaining_balance,
+            'max_users'         => $gf->max_users,
+            'used_count'        => $gf->used_count,
         ]
     ])->assertJsonStructure([
         'data' => [
-            'transactions',
+            'users',
         ]
     ]);
 });

@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\GiftCard;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -27,10 +26,6 @@ class RouteServiceProvider extends ServiceProvider
     {
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
-        });
-
-        Route::bind('gift_card', function ($param) {
-            return GiftCard::whereId($param)->orWhere('code', $param)->firstOrFail();
         });
 
         $this->routes(function () {
