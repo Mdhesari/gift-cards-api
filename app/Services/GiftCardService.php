@@ -68,7 +68,7 @@ class GiftCardService
                 $user->id,
                 $user->defaultWallet()->id,
                 $giftCard->quantity,
-                TransactionStatus::Success, // Todo: may admin verify the transaction first in future but for not it's ok
+                TransactionStatus::Success, // Todo: may admin verify the transaction first in future but for now it's ok
             ));
 
             return new GiftCardResponse([]);
